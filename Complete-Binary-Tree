@@ -1,0 +1,221 @@
+#include<iostream>
+using namespace std;
+
+
+struct Node
+{
+	int key;
+	Node* left;
+	Node* right;
+};
+
+
+class CBT
+{
+public:
+	Node* root;
+
+	CBT();
+	~CBT();
+
+	Node* insert(Node *r,int num);
+	void print(Node* r);
+
+	int height(Node* r);
+	int countleft(Node* r);
+	int countright(Node* r);
+	int bal(Node* r);
+	
+	Node* ins(Node* rt, int num);
+	int count(Node* r);
+	int countnodes(int h);
+};
+
+
+CBT::CBT()
+{
+	root = NULL;
+}
+
+CBT::~CBT()
+{
+
+}
+
+
+
+
+//////////////////////////HEIGHT FUNCTION///////////
+
+int CBT::height(Node* rt)
+{
+	// Base case: empty tree has a height of 0
+	if (rt == nullptr) {
+		return 0;
+	}
+
+	// recur for the left and right subtree and consider maximum depth
+	return 1 + max(height(rt->left), height(rt->right));
+}
+//////////////////INSERTION CODE////////////////////
+
+
+Node* CBT::ins(Node* rt,int num)
+{
+	rt = new Node;
+	rt->left = NULL;
+	rt->right = NULL;
+	rt->key = num;
+	return rt;
+}
+
+
+//////////////////COUNT NODES/////////////////////////
+
+int CBT::countnodes(int h)
+{
+	return pow(2, h) - 1;
+}
+
+///////////////////////////////////CHECK///////////////////
+Node *CBT::insert(Node* rt,int num)
+{
+	
+
+	/////////////////////ROOT INSERTION/////////////////////
+	if (root == NULL)
+	{
+		root=ins(root, num);
+		return root;
+	}
+	
+
+
+	int heightt = height(rt->left);
+	int cn = countnodes(heightt);
+	int lefttreenode = count(rt->left);
+	int righttreenode = count(rt->right);
+	if (lefttreenode == righttreenode)
+	{
+		if (rt->left == NULL)
+		{
+			rt->left = ins(rt->left, num);
+			return rt->left;
+		}
+		else
+		{
+			insert(rt->left, num);
+		}
+	}
+	else if (cn != lefttreenode)
+	{
+		if (rt->left == NULL)
+		{
+			rt->left = ins(rt->left, num);
+			return rt->left;
+		}
+		else
+		{
+			insert(rt->left, num);
+		}
+	}
+	else if(rt->right==NULL)
+	{
+		rt->right = ins(rt->right, num);
+		return rt->right;
+	}
+	else
+	{
+		insert(rt->right, num);
+	}
+	return rt;
+
+}
+
+
+
+
+
+
+
+
+
+////////////////////////////count/////////////////////
+int CBT::count(Node* rt)
+{
+	if (rt == NULL) {
+		return 0;
+	}
+
+	// recur for the left and right subtree and consider maximum depth
+	return 1 + count(rt->left)+count(rt->right);
+}
+
+
+
+///////////////CBT CHECK/////////////////////
+bool isComplete(Node* node, int index, int numn) {
+	if (node == NULL)
+		return true;
+
+	if (index > numn)
+		return false;
+
+	return isComplete(node->left, 2 * index + 1, numn) &&
+		isComplete(node->right, 2 * index + 2, numn);
+}
+
+
+
+
+
+
+
+
+
+
+////////////////////////PRINT NODE///////////////////////
+
+void CBT::print(Node* rt)
+{
+
+	if (root == NULL)
+	{
+		cout << "Emptry Tree" << endl;
+	}
+
+	if (rt->left != NULL)
+	{
+		print(rt->left);
+	}
+	cout << rt->key << " ";
+	if (rt->right != NULL)
+	{
+		print(rt->right);
+	}
+	return;
+	
+	
+}
+
+
+
+int main()
+{
+
+	CBT list;
+	list.insert(list.root, 5);
+	list.insert(list.root, 3);
+	list.insert(list.root, 8);
+	//list.insert(list.root, 6);
+	//list.insert(list.root, 9);
+	//list.insert(list.root, 10);
+	//list.insert(list.root, 12);
+	//list.insert(list.root, 15);
+	list.print(list.root);
+	cout << endl;
+
+
+
+
+}
