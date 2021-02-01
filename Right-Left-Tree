@@ -1,0 +1,109 @@
+#include<iostream>
+using namespace std;
+
+struct node
+{
+	int val;
+	node* left;
+	node* right;
+};
+
+
+class z
+{
+public:
+	node* root;
+	z();
+	node* ins(node* r,int num);
+	void search(node* a, node* c);
+	node* insert(node* a,int num);
+	bool checkr(node* p);
+	bool checkl(node* x);
+};
+
+
+z::z()
+{
+	root = NULL;
+}
+
+node* z::insert(node* t,int num)
+{
+	t = new node;
+	t->left = NULL;
+	t->right = NULL;
+	t->val = num;
+	return t;
+}
+
+void z::search(node* rt, node* f)
+{
+
+}
+
+bool z::checkl(node* x)
+{
+	if (x->left != NULL)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+bool z::checkr(node* x)
+{
+	if (x->right != NULL)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+node* z::ins(node* s,int num)
+{
+	if (s== NULL)
+	{
+		root=insert(s, num);
+		return s;
+	}
+	
+	if (checkr(s) == true)
+	{
+		if (checkl(s->right)== true)
+		{
+			s = ins(s->right->left, num);
+		}
+		else
+		{
+			s->right->left= insert(s->right->left, num);
+			return s;
+		}
+	}
+	else
+	{
+		s->right = insert(s->right, num);
+		return s;
+	}
+	return s;
+}
+
+
+
+int main()
+{
+	z l;
+	l.ins(l.root, 5);
+	l.ins(l.root, 3);
+	l.ins(l.root, 6);
+	l.ins(l.root, 8);
+	cout<<l.root->right->left->right->val << endl;
+
+
+	return 0;
+}
